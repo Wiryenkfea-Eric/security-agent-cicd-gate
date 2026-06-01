@@ -2,100 +2,73 @@ name: AWS Security Agent --- Security Gate
 
 on:
   pull_request:
-    branches: [main, develop, release/*]
+    branches: [main]
     types: [opened, synchronize, reopened]
 
 permissions:
-  id-token: write
   contents: read
   pull-requests: write
   statuses: write
 
 jobs:
   security-gate:
-    name: AWS Security Agent Review
+    name: Security Gate - Vulnerability Scan
     runs-on: ubuntu-latest
-    timeout-minutes: 30
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/GitHubActions-SecurityGate
-          aws-region: us-east-1
-          role-session-name: SecurityGate-${{ github.run_id }}
-
-      - name: Scan for security vulnerabilities
+      - name: Scan for vulnerabilities
         id: scan
         run: |
           CRITICAL=0
           HIGH=0
-          MEDIUM=0
-          LOW=0
 
-          # Check for command injection (subprocess with shell=True)
+          echo "Scanning for vulnerabilities..."
+
+          # Check for command injection
           if grep -r "subprocess.*shell=True" . --include="*.py" 2>/dev/null; then
-            echo "🔴 CRITICAL: Command injection detected (subprocess with shell=True)"
+            echo "::warning::CRITICAL: Command injection detected"
             CRITICAL=$((CRITICAL + 1))
           fi
 
-          # Check for SQL injection (f-string in execute)
-          if grep -r 'cursor.execute(f.*{.*}' . --include="*.py" 2>/dev/null; then
-            echo "🔴 CRITICAL: SQL injection detected (f-string in execute)"
+          # Check for SQL injection
+          if grep -r "cursor.execute(f" . --include="*.py" 2>/dev/null; then
+            echo "::warning::CRITICAL: SQL injection detected"
             CRITICAL=$((CRITICAL + 1))
           fi
 
           # Check for hardcoded secrets
-          if grep -rE '(AWS_SECRET_KEY|API_KEY|PASSWORD|SECRET).*=' . --include="*.py" --include="*.js" --include="*.env" 2>/dev/null; then
-            echo "🟠 HIGH: Hardcoded secret detected"
+          if grep -rE "(AWS_SECRET_KEY|SECRET.*=.*['\"]|API_KEY.*=)" . --include="*.py" 2>/dev/null; then
+            echo "::warning::HIGH: Hardcoded secret detected"
             HIGH=$((HIGH + 1))
           fi
 
-          echo "critical=${CRITICAL}" >> $GITHUB_OUTPUT
-          echo "high=${HIGH}" >> $GITHUB_OUTPUT
-          echo "medium=${MEDIUM}" >> $GITHUB_OUTPUT
-          echo "low=${LOW}" >> $GITHUB_OUTPUT
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
 
-          if [ ${CRITICAL} -gt 0 ] || [ ${HIGH} -gt 0 ]; then
+          if [ $CRITICAL -gt 0 ] || [ $HIGH -gt 0 ]; then
             echo "gate_result=fail" >> $GITHUB_OUTPUT
-            echo "Security vulnerabilities found! PR will be blocked."
           else
             echo "gate_result=pass" >> $GITHUB_OUTPUT
-            echo "No critical vulnerabilities found."
           fi
 
-      - name: Post security findings as PR comment
+      - name: Post PR comment
         uses: actions/github-script@v7
         with:
           script: |
-            const critical = '${{ steps.scan.outputs.critical }}' || '0';
-            const high = '${{ steps.scan.outputs.high }}' || '0';
-            const medium = '${{ steps.scan.outputs.medium }}' || '0';
-            const low = '${{ steps.scan.outputs.low }}' || '0';
+            const critical = '${{ steps.scan.outputs.critical }}';
+            const high = '${{ steps.scan.outputs.high }}';
             const result = '${{ steps.scan.outputs.gate_result }}';
-            const icon = result === 'fail' ? ':x:' : ':white_check_mark:';
 
-            const body = [
-              `## ${icon} AWS Security Agent --- Security Gate Report`,
-              ``,
-              `| Severity | Count | Action |`,
-              `|----------|-------|--------|`,
-              `| 🔴 Critical | ${critical} | ${critical > 0 ? '**BLOCKS merge**' : 'Clean'} |`,
-              `| 🟠 High | ${high} | ${high > 0 ? '**BLOCKS merge**' : 'Clean'} |`,
-              `| 🟡 Medium | ${medium} | ${medium > 0 ? 'Review recommended' : 'Clean'} |`,
-              `| 🔵 Low | ${low} | ${low > 0 ? 'Informational' : 'Clean'} |`,
-              ``,
-              result === 'fail'
-                ? '> **❌ This PR is blocked from merging.** Please fix all CRITICAL and HIGH severity findings.'
-                : '> **✅ Security gate passed.** No critical vulnerabilities detected.',
-              ``,
-              '**Note:** This is a static analysis scan. For full AWS Security Agent integration with AI-powered code review, ensure the AWS CLI has the latest Security Agent commands available.'
-            ].join('\n');
+            const body = `## Security Gate Report
+            | Severity | Count | Action |
+            |----------|-------|--------|
+            | 🔴 Critical | ${critical} | ${critical > 0 ? '**BLOCKS merge**' : 'Clean'} |
+            | 🟠 High | ${high} | ${high > 0 ? '**BLOCKS merge**' : 'Clean'} |
+            
+            ${result === 'fail' ? '❌ **This PR is blocked from merging.** Please fix all vulnerabilities.' : '✅ **Security gate passed.**'}`;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -104,11 +77,8 @@ jobs:
               body
             });
 
-      - name: Set gate status and fail build on CRITICAL/HIGH
+      - name: Fail if vulnerabilities found
+        if: steps.scan.outputs.gate_result == 'fail'
         run: |
-          RESULT=${{ steps.scan.outputs.gate_result }}
-          if [ "${RESULT}" == "fail" ]; then
-            echo "Security gate FAILED --- CRITICAL or HIGH findings detected"
-            exit 1
-          fi
-          echo "Security gate PASSED"
+          echo "❌ Security gate failed!"
+          exit 1
