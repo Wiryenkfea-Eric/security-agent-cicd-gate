@@ -8,13 +8,13 @@
 [![Python](https://img.shields.io/badge/Python_3.12-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
-> Production-grade shift-left security pipeline built on **AWS Security Agent (Preview, Dec 2025)**. Every pull request to `main` is automatically scanned. CRITICAL and HIGH findings block the merge — no exceptions. Findings are routed to Jira automatically. Severity trends are tracked in CloudWatch.
+> Production-grade shift-left security pipeline built on **AWS Security Agent (Preview, Dec 2025)**. Every pull request to `main` is automatically scanned. CRITICAL and HIGH findings block the merge, no exceptions. Findings are routed to Jira automatically. Severity trends are tracked in CloudWatch.
 
 ---
 
 ## Overview
 
-Security reviews that happen after the PR is merged are not security controls — they are post-mortems. This pipeline enforces security at the first gate: the pull request itself.
+Security reviews that happen after the PR is merged are not security controls, they are post-mortems. This pipeline enforces security at the first gate: the pull request itself.
 
 > **📸 Screenshot:** *[Insert: PR page showing ❌ "All checks have failed" + security gate comment with Critical: 2, High: 1, BLOCKS merge]*
 
