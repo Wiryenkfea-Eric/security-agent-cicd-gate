@@ -41,7 +41,7 @@ Security reviews that happen after the PR is merged are not security controls, t
 
 ---
 
-## What Gets Detected
+## What gets detected
 
 | Vulnerability | Severity | Detection |
 |---|---|---|
@@ -101,7 +101,7 @@ aws iam attach-role-policy \
   --policy-arn arn:aws:iam::aws:policy/ReadOnlyAccess
 ```
 
-### 3. Add GitHub Repository Secrets
+### 3. Add GitHub repository secrets
 
 | Secret | Value |
 |---|---|
