@@ -16,7 +16,8 @@
 
 Security reviews that happen after the PR is merged are not security controls, they are post-mortems. This pipeline enforces security at the first gate: the pull request itself.
 
-> **📸 Screenshot:** *[Insert: PR page showing ❌ "All checks have failed" + security gate comment with Critical: 2, High: 1, BLOCKS merge]*
+<img width="470" height="425" alt="image" src="https://github.com/user-attachments/assets/0828cbdd-cef1-46e1-a510-69ee843fdc83" />
+
 
 **When a developer opens a PR against `main`, this pipeline:**
 
