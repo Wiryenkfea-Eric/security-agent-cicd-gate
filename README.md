@@ -31,7 +31,8 @@ Security reviews that happen after the PR is merged are not security controls, t
 
 ## Architecture
 
-> **📸 Screenshot:** *[Insert: the 3-panel architecture diagram — High-Level, OIDC Auth Flow, Findings Processing Flow]*
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/54eadc7b-2db6-4059-b941-7df624924714" />
+
 
 **Three layers working together:**
 
