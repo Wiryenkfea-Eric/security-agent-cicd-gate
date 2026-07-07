@@ -580,4 +580,3 @@ aws cloudwatch list-metrics \
 
 ---
 
-*All commands confirmed working in AWS CloudShell · us-east-1 · June 2026*
