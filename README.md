@@ -210,8 +210,6 @@ When AWS ships the CLI update, the scan step is a single drop-in replacement:
 
 The full 6-phase guide — every confirmed-working command, the complete Lambda code, all CloudWatch and EventBridge configuration — is in **[docs/IMPLEMENTATION.md](docs/IMPLEMENTATION.md)**.
 
-The companion Medium article covers the same content with debugging narrative and production context:
-**[Read on Medium →](https://medium.com/@ericsolavise)**
 
 ---
 
