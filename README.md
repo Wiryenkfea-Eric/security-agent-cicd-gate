@@ -141,9 +141,11 @@ aws secretsmanager create-secret \
 | CloudWatch alarm fires | ✅ Confirmed | `CriticalFindingsAlarm` → "In alarm" state |
 | Native AWS Security Agent API | ⏳ Pending | AWS CLI update required — see Known Limitations |
 
-> **📸 Screenshot:** *[Insert: CloudWatch CriticalFindingsAlarm showing "In alarm" in red]*
+<img width="1593" height="620" alt="Screenshot 2026-06-03 170800" src="https://github.com/user-attachments/assets/dcb76512-82b9-47a2-942d-8b5a4b08892f" />
 
-> **📸 Screenshot:** *[Insert: Jira ticket KAN-1 with Finding Details, file path, and recommendation visible]*
+
+<img width="617" height="281" alt="image" src="https://github.com/user-attachments/assets/f4c1c0a6-416f-402b-8645-f152da4e6c69" />
+
 
 ---
 
