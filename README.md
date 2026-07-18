@@ -1,4 +1,4 @@
-# AWS Security Agent, Enterprise CI/CD Security Gate
+# AWS Security Agent: Enterprise CI/CD Security Gate
 
 [![AWS Security Agent](https://img.shields.io/badge/AWS_Security_Agent-Preview_2025-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/security-agent/)
 [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://github.com/features/actions)
