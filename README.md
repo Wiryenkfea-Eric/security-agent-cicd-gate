@@ -142,7 +142,8 @@ aws secretsmanager create-secret \
 | CloudWatch alarm fires | ✅ Confirmed | `CriticalFindingsAlarm` → "In alarm" state |
 | Native AWS Security Agent API | ⏳ Pending | AWS CLI update required — see Known Limitations |
 
-<img width="1593" height="620" alt="Screenshot 2026-06-03 170800" src="https://github.com/user-attachments/assets/dcb76512-82b9-47a2-942d-8b5a4b08892f" />
+<img width="797" height="310" alt="security-gate-results" src="https://github.com/user-attachments/assets/26f6c99f-7890-4545-ba98-6f97715fea4c" />
+
 
 
 <img width="617" height="281" alt="image" src="https://github.com/user-attachments/assets/f4c1c0a6-416f-402b-8645-f152da4e6c69" />
