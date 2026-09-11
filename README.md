@@ -146,7 +146,8 @@ aws secretsmanager create-secret \
 
 
 
-<img width="617" height="281" alt="image" src="https://github.com/user-attachments/assets/f4c1c0a6-416f-402b-8645-f152da4e6c69" />
+<img width="617" height="281" alt="security-agent-test-finding" src="https://github.com/user-attachments/assets/d62a2b28-b05b-4781-ba7e-d100504a3a08" />
+
 
 
 ---
