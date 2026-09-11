@@ -16,7 +16,8 @@
 
 Security reviews that happen after the PR is merged are not security controls, they are post-mortems. This pipeline enforces security at the first gate: the pull request itself.
 
-<img width="470" height="425" alt="image" src="https://github.com/user-attachments/assets/0828cbdd-cef1-46e1-a510-69ee843fdc83" />
+<img width="1356" height="768" alt="aws-security-gate-overview" src="https://github.com/user-attachments/assets/7c5670a3-6ec3-4100-9efa-2d0e7d0e0030" />
+
 
 
 **When a developer opens a PR against `main`, this pipeline:**
